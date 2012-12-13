@@ -16,12 +16,12 @@ git push review <refspec>
 
 Where refspec is usually one of the following:
 
-HEAD:refs/for/<branch>	Push current branch from HEAD to Gerrit
-HEAD:refs/changes/<ID>	Push new patchset from current branch from HEAD to
-			Gerrit. This requires that the patchset already exists
-			and that the commit message contains a pre-existing
-			Change-Id (Change-Id: I<hex-digit>)
-HEAD:refs/head/<branch>	Push current branch from HEAD to Git
+HEAD:refs/for/<branch>   Push current branch from HEAD to Gerrit
+HEAD:refs/changes/<ID>	 Push new patchset from current branch from HEAD to
+			 Gerrit. This requires that the patchset already exists
+			 and that the commit message contains a pre-existing
+			 Change-Id (Change-Id: I<hex-digit>)
+HEAD:refs/heads/<branch> Push current branch from HEAD to Git
 
 Options:
   -F		Force create, If current remote exists with the same name as the one we
