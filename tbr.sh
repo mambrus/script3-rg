@@ -13,7 +13,7 @@ TBR_SH="tbr.sh"
 function tbr_git() {
 	DB=$(git branch -r | grep ">" | cut -f2 -d">" | awk '{print $1}')
 	if [ -z $DB ]; then
-		git br -r | head -n1 | sed -e 's/^[[:space:]]\+//'
+		git branch -r | head -n1 | sed -e 's/^[[:space:]]\+//'
 	else
 		echo ${DB}
 	fi
