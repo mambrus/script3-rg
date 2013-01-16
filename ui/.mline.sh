@@ -17,27 +17,30 @@ instead. Note that having search patterns comming both from command-line and
 from stdin is considered to be an error.
 
 Options:
-  -d <dir>	Specific projec directory. May be anywhere in git-project.
-  -m <file>	Use this manifest as if it would belong to this project.
-  -p <par>	Instead of printing the whole manifest line, print a parameter in
-  			it. This can pe any parameter normally existing in that line or in
-			the default line. Like for example "revision" would be taken from
-			the default line if no "revision=" is found for the project you
-			seek. Several parameters kan be listed if separated by ','. Order
-			given will determine output order.
-			Typical parameters: path,name,revision,remote.
-			Hints: "name" is path on server for the git and "path" is local-
-			tree path.
-  -s <par>	Search argument. Typical search arguents are "path" or "name" as
-  			they are both unique in a manifest. If combined with stdin input or
-			search-arg-val, position in current source-tree is completely
-			ignored. Having no stdin or search-arg-val makes little sense
-			unless -m is given. If -m points to another manifest, the position
-			of "this" project can be used to for example look up the git
-			position in another manifest. Default type is "path".
-  -f <file>	Serarc arguments in this file. Set to -f- to force input from
-  			stdin when pipe-detecton fails or when you need input from user.
-  -h		This help
+  -d <dir>     Specific projec directory. May be anywhere in git-project.
+  -m <file>    Use this manifest as if it would belong to this project.
+  -p <par>     Instead of printing the whole manifest line, print a parameter in
+               it. This can pe any parameter normally existing in that line or in
+               the default line. Like for example "revision" would be taken from
+               the default line if no "revision=" is found for the project you
+               seek. Several parameters kan be listed if separated by ','. Order
+               given will determine output order.
+               Typical parameters: path,name,revision,remote.
+               Hints: "name" is path on server for the git and "path" is local-
+               tree path.
+  -s <par>     Search argument. Typical search arguents are "path" or "name" as
+               they are both unique in a manifest. If combined with stdin input or
+               search-arg-val, position in current source-tree is completely
+               ignored. Having no stdin or search-arg-val makes little sense
+               unless -m is given. If -m points to another manifest, the position
+               of "this" project can be used to for example look up the git
+               position in another manifest. Default type is "path".
+  -f <file>    Search arguments in this file. Set to -f- to force input from
+               stdin when pipe-detecton fails or when you need input from user.
+  -N           No stdin input. There are cases in scripts where pipe-detection
+               fails and script thinks input is piped. This option ignores pipe.
+               stdin when pipe-detecton fails or when you need input from user.
+  -h           This help
 
 Example:
   $MLINE_SH_INFO -d ~/mydroid/hardware/ti/wlan
@@ -49,7 +52,7 @@ Example:
 
 EOF
 }
-	while getopts hd:m:p:s:f: OPTION; do
+	while getopts hd:m:p:s:f:N OPTION; do
 		case $OPTION in
 		h)
 			clear
@@ -67,6 +70,9 @@ EOF
 			;;
 		s)
 			SEARCH_PARAM=$OPTARG
+			;;
+		N)
+			NO_STDIN="yes"
 			;;
 		f)
 			INPUT_FILE=$OPTARG
@@ -86,11 +92,17 @@ EOF
 	PARAM_VAL=${PARAM_VAL-""}
 	SEARCH_PARAM=${SEARCH_PARAM-"path"}
 	INPUT_FILE=${INPUT_FILE-"/dev/null"}
+	NO_STDIN=${NO_STDIN-"no"}
 
-	IS_ATTY="yes"
-	tty -s ||  IS_ATTY="no"
-	if [ "X${IS_ATTY}" == "Xno" ]; then
-		INPUT_FILE="-"
+	if [ "X${NO_STDIN}" == "Xno" ]; then
+		#Allow test. Otherwise this is a forced non-interactive/-piped
+		IS_ATTY="yes"
+		tty -s ||  IS_ATTY="no"
+		if [ "X${IS_ATTY}" == "Xno" ]; then
+			INPUT_FILE="-"
+		fi
+	else
+		IS_ATTY="yes"
 	fi
 
 	if [ $# -gt 1 ]; then

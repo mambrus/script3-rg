@@ -85,7 +85,21 @@ function mline() {
 		grep "${SEARCH_VAL}" | \
 		sed -e 's/^[[:space:]]\+//'
 	)
-	if [ -z "${MLINE}" ]; then return 5; fi
+	if [ -z "${MLINE}" ]; then 
+		#try one more time but this time use name instead of path as
+		#this is a legal optimization (i.e. "path" is missing on line
+		#in which case path=name
+		SEARCH_VAL=$(echo "${SEARCH_VAL}" | sed -e s'/+path=/+name=/')
+		MLINE=$(
+			mline_manifest | \
+			grep "${SEARCH_VAL}" | \
+			sed -e 's/^[[:space:]]\+//'
+		)
+	fi
+	if [ -z "${MLINE}" ]; then 
+		echo "${SEARCH_VAL}"
+		return 5; 
+	fi
 
 	# If no PARAM_VAL, then we are done, print the raw MLINE, else continue with
 	# parsing the output formatter.
