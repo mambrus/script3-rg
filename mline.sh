@@ -18,10 +18,10 @@ function mline_manifest() {
 	fi
 
 	(
-		if [ "X${MANIFEST_FN}" == "X" ]; then
+		if [ "X${MANIFEST_FILE}" == "X" ]; then
 			manifest
 		else
-			cat ${MANIFEST_FN}
+			cat ${MANIFEST_FILE}
 		fi
 	) | \
 		sed -e '/^[[:space:]]*<!--.*-->[[:space:]]*$/d'  | \
@@ -157,8 +157,8 @@ if [ "$MLINE_SH" == $( ebasename $0 ) ]; then
 	cd ${START_DIR}
 	LNO=0
 
-	if [ "X${IS_ATTY}" == "Xno" ] || [ "X${INPUT_FILE}" == "X-" ]; then
-		cat ${INPUT_FILE} | \
+	if [ "X${IS_ATTY}" == "Xno" ] || [ "X${PARAMS_FILE}" == "X-" ]; then
+		cat ${PARAMS_FILE} | \
 		while read LINE; do
 			(( LNO = LNO + 1))
 			mline "$LINE"

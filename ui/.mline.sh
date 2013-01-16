@@ -35,7 +35,7 @@ Options:
                unless -m is given. If -m points to another manifest, the position
                of "this" project can be used to for example look up the git
                position in another manifest. Default type is "path".
-  -f <file>    Search arguments in this file. Set to -f- to force input from
+  -F <file>    Search arguments in this file. Set to -f- to force input from
                stdin when pipe-detecton fails or when you need input from user.
   -N           No stdin input. There are cases in scripts where pipe-detection
                fails and script thinks input is piped. This option ignores pipe.
@@ -52,7 +52,7 @@ Example:
 
 EOF
 }
-	while getopts hd:m:p:s:f:N OPTION; do
+	while getopts hd:m:p:s:F:N OPTION; do
 		case $OPTION in
 		h)
 			clear
@@ -63,7 +63,7 @@ EOF
 			START_DIR=$OPTARG
 			;;
 		m)
-			MANIFEST_FN=$OPTARG
+			MANIFEST_FILE=$OPTARG
 			;;
 		p)
 			PARAM_VAL=$OPTARG
@@ -74,8 +74,8 @@ EOF
 		N)
 			NO_STDIN="yes"
 			;;
-		f)
-			INPUT_FILE=$OPTARG
+		F)
+			PARAMS_FILE=$OPTARG
 			;;
 		?)
 			echo "Syntax error:" 1>&2
@@ -88,10 +88,10 @@ EOF
 	shift $(($OPTIND - 1))
 
 	START_DIR=${START_DIR-$(pwd)}
-	MANIFEST_FN=${MANIFEST_FN-""}
+	MANIFEST_FILE=${MANIFEST_FILE-""}
 	PARAM_VAL=${PARAM_VAL-""}
 	SEARCH_PARAM=${SEARCH_PARAM-"path"}
-	INPUT_FILE=${INPUT_FILE-"/dev/null"}
+	PARAMS_FILE=${PARAMS_FILE-"/dev/null"}
 	NO_STDIN=${NO_STDIN-"no"}
 
 	if [ "X${NO_STDIN}" == "Xno" ]; then
@@ -99,7 +99,7 @@ EOF
 		IS_ATTY="yes"
 		tty -s ||  IS_ATTY="no"
 		if [ "X${IS_ATTY}" == "Xno" ]; then
-			INPUT_FILE="-"
+			PARAMS_FILE="-"
 		fi
 	else
 		IS_ATTY="yes"
