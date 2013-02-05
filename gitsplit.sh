@@ -24,6 +24,7 @@ function gitsplit() {
 		cd "${LEAF_DIR}.git"
 		git filter-branch --subdirectory-filter "${RELATIVE_GDIR}"
 		git gc
+		git remote add "${REMOTE}" "${URL}/${PRFX}${LEAF_DIR}.git"
 		if [ "X${CLONE_OUT}" == "Xyes" ]; then
 			cd ..
 			git clone "${LEAF_DIR}.git"
