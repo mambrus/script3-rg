@@ -4,7 +4,7 @@
 
 function print_rdir_help() {
 			cat <<EOF
-Usage: $RDIR_SH_INFO [options]
+Usage: $TOPDIR_SH_INFO [options]
 
 Print the root-path of a repo
 
@@ -13,7 +13,7 @@ Options:
   -h        This help
 
 Example:
-  $RDIR_SH_INFO -d ~/mydroid/xx/yy
+  $TOPDIR_SH_INFO -d ~/mydroid/xx/yy
 
 EOF
 }

@@ -5,11 +5,11 @@
 
 # This script prints the root path of the repo prject your in, or pointing at.
 
-if [ -z $RDIR_SH ]; then
+if [ -z $TOPDIR_SH ]; then
 
-RDIR_SH="rdir.sh"
+TOPDIR_SH="topdir.sh"
 
-function rdir() {
+function topdir() {
 	if [ -z up_find ]; then
 		source futil.find.sh
 	fi
@@ -18,16 +18,16 @@ function rdir() {
 }
 
 source s3.ebasename.sh
-if [ "$RDIR_SH" == $( ebasename $0 ) ]; then
+if [ "$TOPDIR_SH" == $( ebasename $0 ) ]; then
 	#Not sourced, do something with this.
 
-	RDIR_SH_INFO=${RDIR_SH}
-	source .rg.ui..rdir.sh
+	TOPDIR_SH_INFO=${RDIR_SH}
+	source .rg.ui..topdir.sh
 	source futil.find.sh
 	OLD_PATH=`pwd`
 
 	cd ${START_DIR}
-	rdir "$@"
+	topdir "$@"
 	RC=$?
 
 	cd ${OLD_PATH}
