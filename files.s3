@@ -2,9 +2,10 @@ cbr.sh
 compact_log.sh
 cstat_manifest.sh
 diff-wrapper.sh
+gitsplit.sh
 manifest.sh
 mline.sh
-rdir.sh
 review_remote.sh
 tbr_co.sh
 tbr.sh
+topdir.sh
