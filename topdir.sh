@@ -3,7 +3,7 @@
 # Author: Michael Ambrus (ambrmi09@gmail.com)
 # 2012-10-20
 
-# This script prints the root path of the repo prject your in, or pointing at.
+# This script prints the root path of the repo project your in, or pointing at.
 
 if [ -z $TOPDIR_SH ]; then
 
@@ -13,8 +13,17 @@ function topdir() {
 	if [ -z up_find ]; then
 		source futil.find.sh
 	fi
-
-	up_find '^\.repo$'
+	if [ "X${REPO_TYPE}" == "Xrepo" ]; then
+		SDIR=$(up_find '^\.repo$')
+	else
+		SDIR=$(up_find '^\.git$')
+	fi
+	
+	if [ "X${SDIR}" == "X" ]; then
+		echo "Directory not found" 1>&2
+	else
+		echo "${SDIR}"
+	fi
 }
 
 source s3.ebasename.sh
