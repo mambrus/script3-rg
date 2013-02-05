@@ -11,22 +11,22 @@ DIR2GIT_SH="gitsplit.sh"
 
 
 function gitsplit() {
-	local R_DIR=$(basename "${CLONE_FROM_DIR}")
+	local LEAF_DIR=$(basename "${CLONE_FROM_DIR}")
 	local ORIG_DIR=$(pwd)
 	(
-		cd $(dirname "${CLONE_FROM_DIR}")
+		cd "${CLONE_FROM_DIR}"
 		REPO_ROOT_DIR=$(rg.topdir.sh -G)
+		RELATIVE_GDIR=$(futil.nchew.sh "${REPO_ROOT_DIR}" "$(pwd)" | \
+			sed -e 's/^\///')
 		cd "${ORIG_DIR}"
-		#mkdir -p "${O_DIR}/${R_DIR}"
-		#cd "${O_DIR}/${R_DIR}"
 		cd "${O_DIR}"
-		git clone --no-hardlinks --mirror "${REPO_ROOT_DIR}" "${R_DIR}.git"
-		cd "${R_DIR}.git"
-		git filter-branch --subdirectory-filter "${R_DIR}"
+		git clone --no-hardlinks --mirror "${REPO_ROOT_DIR}" "${LEAF_DIR}.git"
+		cd "${LEAF_DIR}.git"
+		git filter-branch --subdirectory-filter "${RELATIVE_GDIR}"
 		git gc
 		if [ "X${CLONE_OUT}" == "Xyes" ]; then
 			cd ..
-			git clone "${R_DIR}.git"
+			git clone "${LEAF_DIR}.git"
 		fi
 	)
 }
