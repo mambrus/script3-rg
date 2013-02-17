@@ -10,7 +10,12 @@ if [ -z $CBR_SH ]; then
 CBR_SH="cbr.sh"
 
 function cbr() {
-	git branch | egrep '^\*'
+	BR=$(git branch | egrep '^\*' | sed -e 's/\* //')
+	if [ "X${BR}" == "X(no branch)" ]; then
+		rg.mbr.sh
+	else
+		echo ${BR}
+	fi
 }
 
 source s3.ebasename.sh
