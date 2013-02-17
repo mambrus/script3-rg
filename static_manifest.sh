@@ -9,18 +9,21 @@
 #
 # repo init -m host_date.xml
 
-if [ -z $CSTAT_MANIFEST_SH ]; then
+if [ -z $STATIC_MANIFEST_SH ]; then
 
-CSTAT_MANIFEST_SH="cstat_manifest.sh"
+STATIC_MANIFEST_SH="static_manifest.sh"
 
-function cstat_manifest() {
+function static_manifest() {
 	local FNAME="$1"
 	repo manifest -r -o "${FNAME}" 1>/dev/null 2>/dev/null
 }
 
 source s3.ebasename.sh
-if [ "$CSTAT_MANIFEST_SH" == $( ebasename $0 ) ]; then
+if [ "$STATIC_MANIFEST_SH" == $( ebasename $0 ) ]; then
 	#Not sourced, do something with this.
+
+	STATIC_MANIFEST_SH_INFO=${STATIC_MANIFEST_SH}
+	source .rg.ui..static_manifest.sh
 
 	set -e
 	set -u
@@ -31,7 +34,7 @@ if [ "$CSTAT_MANIFEST_SH" == $( ebasename $0 ) ]; then
 		FNAME="$(hostname)_$(date '+%y%m%d_%H%M%S').xml"
 	fi
 
-	cstat_manifest "${FNAME}" && echo "Static manifest created: ${FNAME}"
+	static_manifest "${FNAME}" && echo "Static manifest created: ${FNAME}"
 
 	exit $?
 fi

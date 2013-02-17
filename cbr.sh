@@ -16,6 +16,9 @@ function cbr() {
 source s3.ebasename.sh
 if [ "$CBR_SH" == $( ebasename $0 ) ]; then
 	#Not sourced, do something with this.
+	
+	CBR_SH_INFO=${CBR_SH}
+	source .rg.ui..cbr.sh
 
 	cbr "$@"
 
