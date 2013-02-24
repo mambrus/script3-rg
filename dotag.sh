@@ -27,7 +27,7 @@ function dotag() {
 		git branch ${BRANCH} ${TRACKING_REMOTE}
 	fi
 	if [ "X${AMMEND}" == "Xyes" ]; then
-		git tag ${FORCED} -a ${THE_TAG} -m ${A_MESSAGE} ${BRANCH}
+		git tag ${FORCED} -a "${THE_TAG}" -m "${A_MESSAGE}" ${BRANCH}
 	else
 		git tag ${FORCED} ${THE_TAG} ${BRANCH}
 	fi
