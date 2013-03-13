@@ -67,8 +67,14 @@ EOF
 
 	BRANCH_NAME=$(basename ${FULL_BRANCH_NAME})
 	FILE_NAME=$(basename ${FULL_FILE_NAME})
-	ROOT_OUT_DIR=${ROOT_OUT_DIR-"/tmp/$(dirname ${FULL_FILE_NAME})"}
-	OUT_DIR=${OUT_DIR-"/tmp/${BRANCH_NAME}/$(dirname ${FULL_FILE_NAME})"}
+
+	if [ "X$(dirname ${FULL_FILE_NAME})" == "X." ]; then
+		ROOT_OUT_DIR=${ROOT_OUT_DIR-"/tmp"}
+		OUT_DIR=${OUT_DIR-"${ROOT_OUT_DIR}/${BRANCH_NAME}"}
+	else
+		ROOT_OUT_DIR=${ROOT_OUT_DIR-"/tmp/$(dirname ${FULL_FILE_NAME})"}
+		OUT_DIR=${OUT_DIR-"${ROOT_OUT_DIR}/${BRANCH_NAME}/$(dirname ${FULL_FILE_NAME})"}
+	fi
 
 #Sanity checks
 	if [ "X${BRANCH_NAME}" == "X" ] || [ "X${OUT_DIR}" == "X" ]; then
